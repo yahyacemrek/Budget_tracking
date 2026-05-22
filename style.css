@@ -1,0 +1,167 @@
+/* Genel Ayarlar & Modern Tipografi */
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: #121212 !important; /* Saf siyah yerine daha göz yormayan bir koyu gri */
+    color: #e0e0e0; /* Metinler için açık gri */
+}
+
+/* Tipografi Vurguları */
+h1, h2, h3, h4, h5, h6, .card-title, .navbar-brand {
+    font-weight: 700 !important;
+    letter-spacing: -0.5px;
+}
+
+/* Navbar Özelleştirme */
+.navbar {
+    background-color: #1a1a1a !important; /* Navbar kartlardan biraz daha koyu */
+}
+
+/* Kart Tasarımı Güzelleştirme */
+.card {
+    background-color: #1e1e1e; /* Kartlar arka plandan biraz daha açık */
+    border-radius: 15px !important; /* Daha yumuşak köşeler */
+    overflow: hidden;
+}
+
+.card-header {
+    background-color: #252525 !important; /* Header kartlardan biraz daha koyu */
+}
+
+/* Dashboard Kartları Özel Renk & Hover */
+.transition-hover {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.transition-hover:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5) !important;
+}
+
+/* Dashboard Arka Plan Renkleri (bootstrap soft colors) */
+.bg-success-subtle { background-color: rgba(25, 135, 84, 0.15) !important; border-color: rgba(25, 135, 84, 0.4) !important; }
+.bg-danger-subtle { background-color: rgba(220, 53, 69, 0.15) !important; border-color: rgba(220, 53, 69, 0.4) !important; }
+.bg-info-subtle { background-color: rgba(13, 202, 240, 0.15) !important; border-color: rgba(13, 202, 240, 0.4) !important; }
+
+/* Dashboard İkon Kutuları (bootstrap soft colors) */
+.bg-success-soft { background-color: rgba(25, 135, 84, 0.2) !important; }
+.bg-danger-soft { background-color: rgba(220, 53, 69, 0.2) !important; }
+.bg-info-soft { background-color: rgba(13, 202, 240, 0.2) !important; }
+
+/* Tablo Temizleme */
+.table-dark-custom {
+    background-color: #2a2a2a;
+    color: #e0e0e0;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) > * {
+    --bs-table-accent-bg: rgba(255, 255, 255, 0.02); /* Çok hafif bir çizgi efekti */
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.05); /* Hover efekti */
+}
+
+.table th, .table td {
+    vertical-align: middle;
+    padding: 1rem !important;
+    border-color: #333;
+}
+
+/* Form Tasarımı Güzelleştirme */
+.form-floating > .form-control, .form-floating > .form-select {
+    border-radius: 10px;
+    border-color: #444;
+    background-color: #2a2a2a;
+    color: #e0e0e0;
+}
+
+.form-floating > label {
+    color: #888;
+}
+
+.form-control:focus, .form-select:focus {
+    background-color: #333;
+    color: #fff;
+    border-color: #3d8bfd; /* Bootstrap primary rengi */
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+/* Gelir ve Gider Renk Vurguları */
+.text-income {
+    color: #75c67e !important; /* Karanlık modda daha iyi okunan yeşil */
+    font-weight: 600;
+}
+
+.text-expense {
+    color: #ff6b6b !important; /* Karanlık modda daha iyi okunan kırmızı */
+    font-weight: 600;
+}
+
+/* Bütçe Listesi Modern Kartları */
+.budget-card {
+    background-color: #2a2a2a;
+    border-radius: 10px;
+    padding: 1rem;
+    border: 1px solid #333;
+    transition: background-color 0.3s;
+}
+
+.budget-card.exceeded {
+    border-color: #ff6b6b;
+    background-color: rgba(220, 53, 69, 0.05);
+}
+
+.budget-card:hover {
+    background-color: #333;
+}
+
+.budget-actions .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    border-radius: 6px;
+}
+
+/* Animasyonlu Uyarı Kutuları */
+.alert {
+    border-radius: 10px;
+    animation: fadeInSlideDown 0.5s ease;
+}
+
+@keyframes fadeInSlideDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Önceki stiller korunarak altına eklenecekler */
+
+.table-dark-custom {
+    background-color: #1a1a1a;
+    color: #a0a0a0;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Küçük tarih sütunu tasarımı */
+.timestamp-cell {
+    font-size: 0.85rem;
+    color: #888888;
+    white-space: nowrap;
+}
+
+.timestamp-time {
+    display: block;
+    font-size: 0.75rem;
+    color: #555555;
+}
+
+/* Ekstre Dönem Kartı İnce Ayarı */
+.border-primary-subtle {
+    border: 1px solid rgba(13, 110, 253, 0.25) !important;
+}
+
+/* Buton grupları arası boşluk */
+.budget-actions {
+    display: flex;
+    gap: 4px;
+}
