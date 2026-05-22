@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="tr" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PennyWise Pro - Finans & Canlı Yatırım Takibi</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-body-tertiary sticky-top shadow border-bottom border-secondary">
+        <div class="container py-2">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <i class="bi bi-wallet2 fs-3 text-primary me-2"></i>
+                <span class="fw-bold fs-4">Penny<span class="text-primary">Wise</span> <small class="fs-6 text-secondary fw-normal">Pro</small></span>
+            </a>
+            
+            <div class="navbar-nav mx-auto flex-row gap-3">
+                <a class="nav-link active fw-semibold view-tab" href="#" onclick="switchView('budget-view', this)">
+                    <i class="bi bi-receipt"></i> Bütçe & Ekstre
+                </a>
+                <a class="nav-link fw-semibold view-tab" href="#" onclick="switchView('investments-view', this)">
+                    <i class="bi bi-graph-up-arrow"></i> Yatırımlar
+                </a>
+            </div>
+
+            <div class="d-flex bg-dark-subtle p-2 px-4 rounded-pill border border-secondary gap-3 align-items-center shadow-sm">
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-cash-stack fs-4 text-success me-2"></i>
+                    <div class="d-flex flex-column lh-1 text-start">
+                        <span class="text-secondary fw-semibold" style="font-size: 0.65rem; letter-spacing: 0.5px;">NAKİT BAKİYE</span>
+                        <span id="nav-cash-balance" class="fw-bold text-success fs-6 mt-1">0.00 ₺</span>
+                    </div>
+                </div>
+                
+                <div class="vr text-secondary opacity-50" style="width: 2px;"></div>
+                
+                <div class="d-flex align-items-center">
+                    <div class="d-flex flex-column lh-1 text-end">
+                        <span class="text-secondary fw-semibold" style="font-size: 0.65rem; letter-spacing: 0.5px;">YATIRIMLAR</span>
+                        <span id="nav-inv-balance" class="fw-bold text-info fs-6 mt-1">0.00 ₺</span>
+                    </div>
+                    <i class="bi bi-pie-chart-fill fs-4 text-info ms-2"></i>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div id="alert-container"></div>
+
+        <div id="budget-view">
+            
+            <div class="card shadow border-primary-subtle mb-4 bg-dark-subtle">
+                <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-md-center g-3">
+                    <div class="d-flex align-items-center mb-3 mb-md-0">
+                        <i class="bi bi-calendar3 text-primary fs-3 me-3"></i>
+                        <div>
+                            <h5 class="m-0 fw-bold">Hesap Ekstresi Dönemi</h5>
+                            <p class="m-0 text-secondary small">Görüntülemek ve işlem yapmak istediğiniz banka dönemini seçin.</p>
+                        </div>
+                    </div>
+                    <div style="max-width: 250px;" class="w-100">
+                        <input type="month" id="statement-month" class="form-control form-control-lg border-primary" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-5 g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="card card-dashboard bg-success-subtle border-success h-100 shadow transition-hover">
+                        <div class="card-body d-flex align-items-center">
+                            <div class="rounded-circle bg-success-soft p-4 me-3 fs-3 text-success">
+                                <i class="bi bi-arrow-up-circle-fill"></i>
+                            </div>
+                            <div>
+                                <h6 class="card-subtitle text-secondary mb-1"><span class="selected-month-text">Bu Ay</span> Gelirleri</h6>
+                                <h2 id="total-income" class="card-title fw-bold text-success m-0">0.00 ₺</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="card card-dashboard bg-danger-subtle border-danger h-100 shadow transition-hover">
+                        <div class="card-body d-flex align-items-center">
+                            <div class="rounded-circle bg-danger-soft p-4 me-3 fs-3 text-danger">
+                                <i class="bi bi-arrow-down-circle-fill"></i>
+                            </div>
+                            <div>
+                                <h6 class="card-subtitle text-secondary mb-1"><span class="selected-month-text">Bu Ay</span> Giderleri</h6>
+                                <h2 id="total-expense" class="card-title fw-bold text-danger m-0">0.00 ₺</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-12">
+                    <div class="card card-dashboard bg-body-secondary border-info h-100 shadow transition-hover">
+                        <div class="card-body d-flex align-items-center">
+                            <div class="rounded-circle bg-info-soft p-4 me-3 fs-3 text-info">
+                                <i class="bi bi-pie-chart-fill"></i>
+                            </div>
+                            <div>
+                                <h6 class="card-subtitle text-secondary mb-1"><span class="selected-month-text">Bu Ay</span> Durumu</h6>
+                                <h2 id="net-balance" class="card-title fw-bold text-info m-0">0.00 ₺</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-5 mb-5">
+                <div class="col-md-7">
+                    <div class="card shadow border-secondary h-100">
+                        <div class="card-header bg-dark-subtle border-secondary p-3 d-flex align-items-center">
+                            <i class="bi bi-plus-circle-dotted fs-4 text-primary me-2"></i>
+                            <h5 class="m-0 fw-semibold text-primary">Yeni İşlem Ekle</h5>
+                        </div>
+                        <div class="card-body p-4">
+                            <form id="transaction-form">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-3">
+                                            <select id="type" class="form-select" required>
+                                                <option value="income">Gelir</option>
+                                                <option value="expense">Gider</option>
+                                            </select>
+                                            <label for="type">İşlem Tipi</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-3">
+                                            <select id="category" class="form-select" required>
+                                                <option value="Maaş">Maaş</option>
+                                                <option value="Market">Market</option>
+                                                <option value="Kira">Kira</option>
+                                                <option value="Eğlence">Eğlence</option>
+                                                <option value="Fatura">Fatura</option>
+                                                <option value="Ulaşım">Ulaşım</option>
+                                                <option value="Diğer">Diğer</option>
+                                            </select>
+                                            <label for="category">Kategori</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-floating mb-3">
+                                            <input type="number" id="amount" class="form-control" min="0.01" step="0.01" required placeholder="0.00">
+                                            <label for="amount">Tutar (TL)</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" id="description" class="form-control" required placeholder="İşlem detayı...">
+                                            <label for="description">Açıklama / Kurum Adı</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-grid mt-3">
+                                    <button type="submit" class="btn btn-primary btn-lg rounded-pill fw-semibold">
+                                        <i class="bi bi-check-all me-1"></i> İşlemi Ekstreye İşle
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-5">
+                    <div class="card shadow border-secondary h-100">
+                        <div class="card-header bg-dark-subtle border-secondary p-3 d-flex align-items-center">
+                            <i class="bi bi-flag fs-4 text-info me-2"></i>
+                            <h5 class="m-0 fw-semibold text-info">Aylık Limit Hedefleri</h5>
+                        </div>
+                        <div class="card-body p-4">
+                            <form id="budget-form">
+                                <input type="hidden" id="edit-budget-category-id" value="">
+                                <div class="row g-3">
+                                    <div class="col-md-12">
+                                        <div class="form-floating mb-3">
+                                            <select id="budget-category" class="form-select" required>
+                                                <option value="Market">Market</option>
+                                                <option value="Eğlence">Eğlence</option>
+                                                <option value="Fatura">Fatura</option>
+                                                <option value="Ulaşım">Ulaşım</option>
+                                                <option value="Diğer">Diğer</option>
+                                            </select>
+                                            <label for="budget-category">Gider Kategorisi</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-floating mb-3">
+                                            <input type="number" id="budget-limit" class="form-control" min="1" step="1" required placeholder="1000">
+                                            <label for="budget-limit">Seçilen Ay İçin Limit (TL)</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-grid mt-2">
+                                    <button type="submit" id="budget-submit-btn" class="btn btn-info btn-lg rounded-pill fw-semibold text-dark">
+                                        <i class="bi bi-save me-1"></i> Limiti Kaydet
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-5 mb-5">
+                <div class="col-md-8">
+                    <div class="card shadow border-secondary">
+                        <div class="card-header bg-dark-subtle border-secondary p-3 d-flex justify-content-between align-items-center">
+                            <h5 class="m-0 fw-semibold text-light">
+                                <i class="bi bi-receipt text-secondary me-2"></i>Dönem Hesap Ekstresi
+                            </h5>
+                            <span class="badge bg-primary px-3 py-2 rounded-pill" id="statement-period-badge">Dönem</span>
+                        </div>
+                        <div class="card-body p-0 table-responsive">
+                            <table class="table table-hover table-striped align-middle mb-0">
+                                <thead class="table-dark-custom">
+                                    <tr>
+                                        <th>Tarih / Saat</th>
+                                        <th>Tür</th>
+                                        <th>Kategori</th>
+                                        <th>Açıklama</th>
+                                        <th class="text-end">Tutar</th>
+                                        <th class="text-center">Eylem</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="transaction-list">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card shadow border-secondary h-100">
+                        <div class="card-header bg-dark-subtle border-secondary p-3">
+                            <h5 class="m-0 fw-semibold text-light">
+                                <i class="bi bi-shield-exclamation text-secondary me-2"></i>Dönem Bütçe Uyumu
+                            </h5>
+                        </div>
+                        <div class="card-body p-3">
+                            <div id="budget-list" class="d-flex flex-column gap-3">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="investments-view" class="d-none">
+            
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card bg-dark border-secondary shadow-sm">
+                        <div class="card-body py-3 d-flex flex-wrap justify-content-between align-items-center">
+                            <div class="d-flex align-items-center mb-2 mb-md-0">
+                                <i class="bi bi-broadcast text-danger me-2 blink-animation fs-5"></i>
+                                <span class="fw-bold text-light">Canlı Piyasalar</span>
+                            </div>
+                            <div class="d-flex gap-4 flex-wrap" id="market-ticker">
+                                <div class="text-secondary small">
+                                    <div class="spinner-border spinner-border-sm text-primary me-2"></div>Kurlar Yükleniyor...
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4 g-4">
+                <div class="col-md-4">
+                    <div class="card bg-dark-subtle border-secondary h-100 shadow">
+                        <div class="card-body">
+                            <h6 class="text-secondary">Toplam Yatırılan Anapara</h6>
+                            <h3 id="inv-total-principal" class="fw-bold text-light m-0">0.00 ₺</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card bg-dark-subtle border-secondary h-100 shadow">
+                        <div class="card-body">
+                            <h6 class="text-secondary">Güncel Portföy Değeri</h6>
+                            <h3 id="inv-total-current" class="fw-bold text-info m-0">0.00 ₺</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card bg-dark-subtle border-secondary h-100 shadow">
+                        <div class="card-body">
+                            <h6 class="text-secondary">Toplam Kâr / Zarar</h6>
+                            <h3 id="inv-total-pnl" class="fw-bold m-0">0.00 ₺</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4 mb-5">
+                <div class="col-md-4">
+                    <div class="card shadow border-secondary h-100">
+                        <div class="card-header bg-dark-subtle border-secondary p-3">
+                            <h5 class="m-0 fw-semibold text-primary"><i class="bi bi-briefcase me-2"></i>Varlık İşlemleri</h5>
+                        </div>
+                        <div class="card-body">
+                            <form id="investment-form">
+                                <div class="form-floating mb-3">
+                                    <select id="inv-action" class="form-select" required>
+                                        <option value="buy">Alış (Portföye Ekle)</option>
+                                        <option value="sell">Satış (Nakit Çevir)</option>
+                                    </select>
+                                    <label>İşlem Türü</label>
+                                </div>
+
+                                <div class="form-floating mb-3">
+                                    <select id="inv-asset" class="form-select" required>
+                                        <option value="Altın">Gram Altın</option>
+                                        <option value="Gümüş">Gram Gümüş</option>
+                                        <option value="Dolar">Dolar (USD)</option>
+                                        <option value="Euro">Euro (EUR)</option>
+                                        <option value="Hisse">Borsa (Hisse)</option>
+                                        <option value="Kripto">Kripto Para</option>
+                                    </select>
+                                    <label>Varlık Türü</label>
+                                </div>
+                                
+                                <div class="row g-2">
+                                    <div class="col-6">
+                                        <div class="form-floating mb-3">
+                                            <input type="number" id="inv-amount" class="form-control" min="0.001" step="0.001" required placeholder="10">
+                                            <label>Miktar (Adet/Gram)</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-floating mb-3">
+                                            <input type="number" id="inv-buy-price" class="form-control" min="0.01" step="0.01" required placeholder="2500">
+                                            <label id="inv-price-label">İşlem Kuru (TL)</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-check form-switch mb-3">
+                                    <input class="form-check-input" type="checkbox" id="inv-auto-price" checked>
+                                    <label class="form-check-label text-secondary small" for="inv-auto-price">
+                                        <i class="bi bi-cloud-arrow-down text-primary me-1"></i> Güncel Kuru API'den Otomatik Çek
+                                    </label>
+                                </div>
+
+                                <div class="form-floating mb-3" id="manual-price-container" style="display: none;">
+                                    <input type="number" id="inv-manual-current" class="form-control" min="0.01" step="0.01" placeholder="3000">
+                                    <label>Manuel Güncel Kur (TL)</label>
+                                </div>
+
+                                <button type="submit" id="inv-submit-btn" class="btn btn-primary w-100 rounded-pill fw-semibold">
+                                    <i class="bi bi-plus-lg me-1"></i> Portföyü Güncelle
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-8">
+                    <div class="card shadow border-secondary h-100">
+                        <div class="card-header bg-dark-subtle border-secondary p-3">
+                            <h5 class="m-0 fw-semibold text-light"><i class="bi bi-pie-chart me-2"></i>Aktif Yatırımlar & Canlı Piyasalar</h5>
+                        </div>
+                        <div class="card-body p-0 table-responsive">
+                            <table class="table table-hover table-striped align-middle mb-0">
+                                <thead class="table-dark-custom">
+                                    <tr>
+                                        <th>Varlık Bilgisi</th>
+                                        <th class="text-end">Maliyet Tutarı</th>
+                                        <th class="text-end">Güncel Değer</th>
+                                        <th class="text-end">Anlık Kâr / Zarar</th>
+                                        <th class="text-center">İşlem</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="investment-list">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bundle.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
